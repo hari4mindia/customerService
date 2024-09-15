@@ -67,3 +67,92 @@ INSERT INTO customer (name, address, account_type) VALUES
 ('Xander Davis', '4949 Willow St, Springfield', 'Savings');
 
 
+
+Here’s a design for a microservices architecture for a bank-themed application with three distinct services, each using a different backend technology and interconnected logically:
+
+1. Customer Service (Already Created)
+Function: Manages customer data such as personal details, address, account type, etc.
+Database: PostgreSQL (already created on AWS RDS).
+Technology Stack: Spring Boot, PostgreSQL, REST API.
+Responsibilities:
+CRUD operations for customer information.
+Retrieve customer details for downstream services (e.g., Payment and Transaction Services).
+2. Payment Service (Use AWS DocumentDB - NoSQL)
+Function: Handles payments and transaction processing for customers. Each payment is stored in a NoSQL database (ideal for the transactional nature and potentially high throughput).
+Database: AWS DocumentDB (Amazon's MongoDB-compatible database).
+Technology Stack: Spring Boot, AWS DocumentDB, REST API.
+Responsibilities:
+Initiate and record payments.
+Handle payment status, such as "pending", "successful", or "failed".
+Retrieve transaction history for customers.
+Document Structure Example in AWS DocumentDB:
+
+json
+Copy code
+{
+  "_id": "transaction_id",
+  "customerId": "customer_id_from_postgres",
+  "amount": 500.00,
+  "currency": "USD",
+  "status": "SUCCESS",
+  "transactionDate": "2024-09-15T14:30:00Z",
+  "paymentMethod": {
+    "type": "credit_card",
+    "cardNumber": "**** **** **** 1234"
+  }
+}
+Integration:
+
+Payment Service will retrieve customer data from the Customer Service using a REST API.
+The service will manage the logic for processing transactions, storing them in AWS DocumentDB.
+AWS Free Tier offers 30 GB storage with AWS DocumentDB which should be sufficient for a small-scale microservice.
+3. Notification Service (Use AWS Managed Streaming for Apache Kafka)
+Function: Sends notifications (e.g., email, SMS) when certain events occur, such as successful payments, failed transactions, or changes in customer profiles.
+Backend: AWS MSK (Managed Streaming for Apache Kafka) – used to stream events like payments being completed, or customer updates.
+Technology Stack: Spring Boot, AWS MSK, Kafka Streams, REST API.
+Responsibilities:
+Listen for events (e.g., a payment completed or customer information updated).
+Send notifications to customers (via email, SMS, or app notification).
+Kafka topics:
+payment_notifications: Receives events about payment success or failure.
+customer_notifications: Receives events about customer updates.
+Integration:
+
+Payment Service publishes a message to the payment_notifications Kafka topic whenever a payment is processed.
+Customer Service publishes a message to the customer_notifications Kafka topic when customer information is updated.
+The Notification Service subscribes to both Kafka topics and triggers notifications accordingly.
+AWS Free Tier offers some limited usage of MSK (750 hours/month), which should suffice for testing and low-volume applications.
+Logical Flow of the Microservices:
+Customer Service (PostgreSQL-based):
+
+Manages customer data.
+Provides API to retrieve customer information for other services.
+Payment Service (AWS DocumentDB):
+
+Retrieves customer data via REST API from the Customer Service.
+Processes payments, stores transaction data in AWS DocumentDB, and publishes payment status events to Kafka.
+Notification Service (AWS MSK - Kafka):
+
+Listens for events from the Payment Service and Customer Service.
+Sends out notifications for key events, such as payment completion or customer data updates.
+Technology Choices Breakdown:
+Customer Service:
+
+Backend: PostgreSQL (AWS RDS).
+Reason: Relational database structure is ideal for managing structured customer data.
+Payment Service:
+
+Backend: AWS DocumentDB (MongoDB-compatible).
+Reason: NoSQL is great for managing high-throughput transaction data where schema flexibility and scalability are important.
+Notification Service:
+
+Backend: AWS Managed Kafka (MSK).
+Reason: Kafka is well-suited for event-driven communication, allowing services to remain decoupled but still communicate asynchronously through event streams.
+Summary of Services and Technology Stack
+Service	Technology	Database	Purpose
+Customer	Spring Boot	PostgreSQL (RDS)	Manages customer information (CRUD).
+Payment	Spring Boot	AWS DocumentDB	Processes and stores payment transactions.
+Notification	Spring Boot + Kafka	AWS MSK	Listens to events and sends notifications.
+
+
+
