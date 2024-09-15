@@ -1,0 +1,120 @@
+{
+	"info": {
+		"_postman_id": "80a48183-f8d2-4cdf-a8cc-4d6c4ee8311f",
+		"name": "Customer service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2605469",
+		"_collection_link": "https://speeding-water-169151.postman.co/workspace/Test~a665f3e3-773b-43e6-9dcc-445994214696/collection/2605469-80a48183-f8d2-4cdf-a8cc-4d6c4ee8311f?action=share&source=collection_link&creator=2605469"
+	},
+	"item": [
+		{
+			"name": "Get Customer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update customer",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Mithran\",\r\n  \"address\": \"1111 Radiance Royale\",\r\n  \"accountType\": \"savings\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers/59",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"59"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Kavitha\",\r\n  \"address\": \"1111 Radiance Royale\",\r\n  \"accountType\": \"Checking\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete customer Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Kavitha\",\r\n  \"address\": \"1111 Radiance Royale\",\r\n  \"accountType\": \"Checking\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/customers/58",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"customers",
+						"58"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

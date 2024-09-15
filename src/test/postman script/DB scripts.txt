@@ -1,0 +1,69 @@
+postgres
+postgres
+jdbc:postgresql://my-postgres.c5sey48eippw.us-east-1.rds.amazonaws.com:5432/postgres
+
+CREATE TABLE customer (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    account_type VARCHAR(50) NOT NULL
+);
+
+
+
+
+INSERT INTO customer (name, address, account_type) VALUES
+('Hariharan N', '123 Elm St, Springfield', 'Checking'),
+('Jane Smith', '456 Oak St, Springfield', 'Savings'),
+('Alice Johnson', '789 Pine St, Springfield', 'Checking'),
+('Bob Brown', '101 Maple Ave, Springfield', 'Savings'),
+('Carol White', '202 Birch St, Springfield', 'Checking'),
+('David Green', '303 Cedar St, Springfield', 'Savings'),
+('Eve Black', '404 Willow St, Springfield', 'Checking'),
+('Frank Harris', '505 Walnut St, Springfield', 'Savings'),
+('Grace Martin', '606 Cherry St, Springfield', 'Checking'),
+('Hank Clark', '707 Spruce St, Springfield', 'Savings'),
+('Ivy Lewis', '808 Fir St, Springfield', 'Checking'),
+('Jack Young', '909 Redwood St, Springfield', 'Savings'),
+('Kathy King', '1010 Poplar St, Springfield', 'Checking'),
+('Leo Scott', '1111 Aspen St, Springfield', 'Savings'),
+('Mia Turner', '1212 Sycamore St, Springfield', 'Checking'),
+('Nate Adams', '1313 Elm St, Springfield', 'Savings'),
+('Olivia Carter', '1414 Oak St, Springfield', 'Checking'),
+('Paul Mitchell', '1515 Pine St, Springfield', 'Savings'),
+('Quinn Roberts', '1616 Maple Ave, Springfield', 'Checking'),
+('Rita Stewart', '1717 Birch St, Springfield', 'Savings'),
+('Steve Adams', '1818 Cedar St, Springfield', 'Checking'),
+('Tina Wilson', '1919 Willow St, Springfield', 'Savings'),
+('Ulysses Hall', '2020 Walnut St, Springfield', 'Checking'),
+('Vera Lee', '2121 Cherry St, Springfield', 'Savings'),
+('Walter Walker', '2222 Spruce St, Springfield', 'Checking'),
+('Xena White', '2323 Fir St, Springfield', 'Savings'),
+('Yara Martinez', '2424 Redwood St, Springfield', 'Checking'),
+('Zachary Nelson', '2525 Poplar St, Springfield', 'Savings'),
+('Anna Scott', '2626 Aspen St, Springfield', 'Checking'),
+('Brian Wright', '2727 Sycamore St, Springfield', 'Savings'),
+('Catherine Harris', '2828 Elm St, Springfield', 'Checking'),
+('Daniel Lewis', '2929 Oak St, Springfield', 'Savings'),
+('Ella Brown', '3030 Pine St, Springfield', 'Checking'),
+('Franklin Davis', '3131 Maple Ave, Springfield', 'Savings'),
+('Grace Turner', '3232 Birch St, Springfield', 'Checking'),
+('Henry Young', '3333 Cedar St, Springfield', 'Savings'),
+('Isabel Wilson', '3434 Willow St, Springfield', 'Checking'),
+('James Martinez', '3535 Walnut St, Springfield', 'Savings'),
+('Karen Johnson', '3636 Cherry St, Springfield', 'Checking'),
+('Larry Adams', '3737 Spruce St, Springfield', 'Savings'),
+('Maria King', '3838 Fir St, Springfield', 'Checking'),
+('Nina Harris', '3939 Redwood St, Springfield', 'Savings'),
+('Oscar Mitchell', '4040 Poplar St, Springfield', 'Checking'),
+('Paula Lewis', '4141 Aspen St, Springfield', 'Savings'),
+('Quincy White', '4242 Sycamore St, Springfield', 'Checking'),
+('Riley Clark', '4343 Elm St, Springfield', 'Savings'),
+('Sandra Green', '4444 Oak St, Springfield', 'Checking'),
+('Timothy Hall', '4545 Pine St, Springfield', 'Savings'),
+('Ursula Martinez', '4646 Maple Ave, Springfield', 'Checking'),
+('Victor Scott', '4747 Birch St, Springfield', 'Savings'),
+('Wendy Turner', '4848 Cedar St, Springfield', 'Checking'),
+('Xander Davis', '4949 Willow St, Springfield', 'Savings');
+
+
