@@ -48,5 +48,14 @@ public class Customer {
     private String address;
     private String accountType;
 
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    private String customerId;
     // Getters and Setters
 }

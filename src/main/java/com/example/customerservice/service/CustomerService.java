@@ -21,6 +21,10 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
+    public Customer getCustomerByCustomerId(String id) {
+        return customerRepository.findByCustomerId(id);
+    }
+
     public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }
