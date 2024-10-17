@@ -1,0 +1,101 @@
+corp - 571=242
+sp = 571=241 or  571=242
+
+
+
+
+
+
+
+
+corp - MAIN FRAME
+
+20241007-080030 *** TRACE SENT ; SEQ# BW8HG#1002; MSG=8=FIX.4.4|9=407|35=AE|49=NFSC|56=FNRA|50=410A|57=CA|34=21|43=N|97=N|52=20241007-12:00:30|571=810BW8HG#1002|1003=2000144297|487=2|856=5|570=N|1015=1|48=037411BF1|22=1|32=00000025000.00|31=0096.537000|75=20240923|64=20240924|552=2|54=2|37=242810BW8HG|453=3|448=NFSC|447=C|452=1|448=0226|447=C|452=83|448=RAAI|447=C|452=14|528=A|54=1|37=NONE|453=1|448=TMCC|447=C|452=17|22016=S1|22011=20240923|22036=TMCC|60=20240923-17:53:03|10=209| 
+
+corp
+"Mon Oct 07 08:20:44 EDT 2024: outgoing: 8=FIX.4.49=38735=AE31=0096.53700032=00000000000.0034=25849=NFSC50=5A0852=20241007-12:20:4456=FNRA57=CA60=20240923-17:53:03.00097=N1015=122016=S122034=N22036=TMCC22=148=037411BF164=2024092475=20240923487=0570=N571=242810BW8HG##001856=0552=254=137=242810BW8HG453=3448=NFSC447=C452=1448=0226447=C452=83448=RAAI447=C452=14528=A54=237=NONE453=1448=C   447=C452=1710=163", 
+
+
+SP Mainframe
+
+Hari 17-10-2024 19:00 • 20241007-080131 *** TRACE SENT ; SEQ# F08FQ21001; MSG=8=FIX.4.4|9=374|35=AE|49=NFSC|56=FNRA|50=4109|57=SP|34=6|43=N|97=N|52=20241007-12:01:31|571=701F08FQ21001|1003=1000021810|487=1|856=6|570=N|1015=1|48=3140XFK42|22=1|32=00000002000.00|31=0091.000000|75=20240618|64=20240620|552=2|54=2|37=701F08FQ21001|453=2|448=NFSC|447=C|452=1|448=0226|447=C|452=83|528=A|54=1|37=NONE|453=1|448=TRYN|447=C|452=17|22004=O|22011=20240618|60=20240618-21:43:00|10=028| MQ: .000000|DB2: .000000 080131326884
+
+SP Cloud
+"Mon Oct 07 08:12:16 EDT 2024: outgoing: 8=FIX.4.49=36435=AE31=0093.21000032=00000065000.0034=3349=NFSC50=5A0952=20241007-12:12:1656=FNRA57=SP60=20241001-16:51:08.00097=N228=01015=122=148=3136B17E864=2024100175=20241001487=0570=N571=242810BW9XP##001856=0552=254=137=242810BW9XP453=3448=NFSC447=C452=1448=0226447=C452=83448=OHIO447=C452=14528=P54=237=NONE453=1448=C   447=C452=1710=034",
+
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Main {
+    public static void main(String[] args) {
+        var cloudList = getCloud();
+        var mainframeList = getMainFrame();
+
+        System.out.printf("Total cloud items: %d, Total mainframe items: %d%n", cloudList.size(), mainframeList.size());
+
+        var unmatched = findUnmatchedItems(mainframeList, cloudList);
+        var matched = findMatchedItems(mainframeList, cloudList);
+        var unProcessedList = findUnprocessedItems(cloudList, unmatched, matched);
+
+        System.out.println("Remaining Cloud Items:");
+        unProcessedList.forEach(System.out::println);
+
+        System.out.printf("Total cloud items: %d, Total mainframe items: %d, Unmatched: %d, Matched: %d, Remaining: %d%n",
+                cloudList.size(), mainframeList.size(), unmatched.size(), matched.size(), unProcessedList.size());
+    }
+
+    private static List<String> findUnmatchedItems(List<String> mainframeList, List<String> cloudList) {
+        return mainframeList.stream()
+                .filter(item -> !cloudList.contains(item))
+                .peek(System.out::println) // Print each unmatched item
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> findMatchedItems(List<String> mainframeList, List<String> cloudList) {
+        return mainframeList.stream()
+                .filter(cloudList::contains)
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> findUnprocessedItems(List<String> cloudList, List<String> unmatched, List<String> matched) {
+        var processedList = new ArrayList<String>();
+        processedList.addAll(matched);
+        processedList.addAll(unmatched);
+
+        return cloudList.stream()
+                .filter(item -> !processedList.contains(item))
+                .collect(Collectors.toList());
+    }
+
+    private static List<String> getCloud() {
+        try (var lines = Files.lines(Path.of("C:\\Users\\a633870\\Documents\\logfiles\\CA-Fix-Cloud-1007.txt"))) {
+            return lines
+                    .filter(line -> line.contains("\u0001") && line.contains("outgoing"))
+                    .map(line -> line.split("\u0001571=242"))
+                    .filter(arr -> arr.length > 1)
+                    .map(arr -> "571=" + arr[1].split("\u0001")[0])
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading cloud log file", e);
+        }
+    }
+
+    private static List<String> getMainFrame() {
+        try (var lines = Files.lines(Path.of("C:\\Users\\a633870\\Documents\\logfiles\\CORP.FIX.LOG.20241007.TXT"))) {
+            return lines
+                    .filter(line -> line.contains("|"))
+                    .map(line -> line.split("\\|"))
+                    .filter(arr -> arr.length >= 12 && arr[11].startsWith("571="))
+                    .map(arr -> arr[11])
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading mainframe log file", e);
+        }
+    }
+}
+
